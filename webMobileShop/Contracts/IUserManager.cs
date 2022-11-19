@@ -9,6 +9,9 @@ namespace webMobileShop.Contracts
         User InsertUser(User user);
         User UpdateUser(User user);
         User GetUserByEmail(string Email);
-        User GetUserById(long UserId); 
-    }
+        bool CheckIfEmailExists(string Email);
+        bool CheckIfValidActivationCode(string Code);
+        User GetUserById(long UserId);
+        User GetUserByCode(string Code);  
+    } 
 }

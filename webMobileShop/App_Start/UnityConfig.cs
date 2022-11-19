@@ -15,14 +15,15 @@ namespace webMobileShop.App_Start
         public static void RegisterComponents()
         {
             var container = new UnityContainer();
-            //Register the Repository in the Unity Container
-            //container.RegisterType<AccountController>(); 
+            //Register the Repository in the Unity Container                         
             container.RegisterType<UserInteractor>();
             container.RegisterType<IUserManager, UsersManager>();
             container.RegisterType<IRepositoryWrapper, RepositoryWrapper>();
             container.RegisterType<IUserRoleManager, UserRoleManager>();
             container.RegisterType<IRoleManager, RoleManager>();
             container.RegisterType<IHashManager, HashManager>();
+            
+
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

@@ -27,7 +27,7 @@ namespace webMobileShop.Models
     
         public virtual DbSet<mVariable> mVariables { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<UserRolesMapping> UserRolesMappings { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserRolesMapping> UserRolesMappings { get; set; }
     }
 }

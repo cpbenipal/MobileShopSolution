@@ -35,9 +35,21 @@ namespace webMobileShop.Repositories
         {
             return _repositoryBase.GetAll().FirstOrDefault(x => x.Email == Email);
         }
+        public bool CheckIfEmailExists(string Email)
+        {
+            return _repositoryBase.GetAll().Any(x => x.Email == Email);
+        }
+        public bool CheckIfValidActivationCode(string Code)
+        {
+            return _repositoryBase.GetAll().Any(x => x.Code == Code); 
+        }
         public User GetUserById(long UserId)
         {
             return _repositoryBase.GetAll().FirstOrDefault(x => x.Id == UserId);
+        }
+        public User GetUserByCode(string Code)
+        {
+            return _repositoryBase.GetAll().FirstOrDefault(x => x.Code == Code);
         }
     }
 }

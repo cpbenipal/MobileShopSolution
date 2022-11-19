@@ -7,11 +7,11 @@
       <Diagram DiagramId="e7355187104940f4bb360ea0e2aef74f" Name="Diagram1">
         <EntityTypeShape EntityType="DbMobileShopModel.mVariable" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="DbMobileShopModel.Role" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbMobileShopModel.UserRolesMapping" Width="1.5" PointX="5.25" PointY="2" IsExpanded="true" />
-        <EntityTypeShape EntityType="DbMobileShopModel.User" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="DbMobileShopModel.FK_Users_mVariable" ManuallyRouted="false" />
-        <AssociationConnector Association="DbMobileShopModel.FK_UserRolesMapping_Roles" ManuallyRouted="false" />
-        <AssociationConnector Association="DbMobileShopModel.FK_UserRolesMapping_UserRolesMapping" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DbMobileShopModel.User" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="DbMobileShopModel.FK_Users_mVariable" />
+        <EntityTypeShape EntityType="DbMobileShopModel.UserRolesMapping" Width="1.5" PointX="5.25" PointY="3.375" />
+        <AssociationConnector Association="DbMobileShopModel.FK_UserRolesMapping_Roles" />
+        <AssociationConnector Association="DbMobileShopModel.FK_UserRolesMapping_UserRolesMapping" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

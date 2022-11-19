@@ -26,6 +26,7 @@ namespace webMobileShop.Models
         public string Password { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public string Code { get; set; }
         public string Mobile { get; set; }
         public string Address { get; set; }
         public int IsActive { get; set; }

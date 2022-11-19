@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DbMobileShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DbMobileShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="mVariable">
           <Key>
             <PropertyRef Name="ID" />
@@ -25,7 +25,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="bigint" Nullable="false" />
           <Property Name="RoleID" Type="int" Nullable="false" />
         </EntityType>
@@ -39,6 +39,7 @@
           <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="PasswordHash" Type="varbinary(max)" Nullable="false" />
           <Property Name="PasswordSalt" Type="varbinary(max)" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="36" />
           <Property Name="Mobile" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
           <Property Name="IsActive" Type="int" Nullable="false" />
@@ -101,8 +102,7 @@
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DbMobileShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -114,7 +114,7 @@
           <Property Name="Field" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_Users_mVariable" FromRole="mVariable" ToRole="Users" />
+          <NavigationProperty Name="Users" Relationship="DbMobileShopModel.FK_Users_mVariable" FromRole="mVariable" ToRole="User" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -122,55 +122,74 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="UserRolesMappings" Relationship="Self.FK_UserRolesMapping_Roles" FromRole="Roles" ToRole="UserRolesMapping" />
+          <NavigationProperty Name="UserRolesMappings" Relationship="DbMobileShopModel.FK_UserRolesMapping_Roles" FromRole="Role" ToRole="UserRolesMapping" />
         </EntityType>
-        <EntityType Name="UserRolesMapping">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int64" Nullable="false" />
-          <Property Name="RoleID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Role" Relationship="Self.FK_UserRolesMapping_Roles" FromRole="UserRolesMapping" ToRole="Roles" />
-          <NavigationProperty Name="User" Relationship="Self.FK_UserRolesMapping_UserRolesMapping" FromRole="UserRolesMapping" ToRole="Users" />
-        </EntityType>
+        <EntityContainer Name="DbMobileShopEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="mVariables" EntityType="Self.mVariable" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Users" EntityType="DbMobileShopModel.User" />
+          <AssociationSet Name="FK_Users_mVariable" Association="DbMobileShopModel.FK_Users_mVariable">
+            <End Role="mVariable" EntitySet="mVariables" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="UserRolesMappings" EntityType="DbMobileShopModel.UserRolesMapping" />
+          <AssociationSet Name="FK_UserRolesMapping_Roles" Association="DbMobileShopModel.FK_UserRolesMapping_Roles">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="UserRolesMapping" EntitySet="UserRolesMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserRolesMapping_UserRolesMapping" Association="DbMobileShopModel.FK_UserRolesMapping_UserRolesMapping">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserRolesMapping" EntitySet="UserRolesMappings" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="FullName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PasswordHash" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="PasswordSalt" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
-          <Property Name="Mobile" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="PasswordSalt" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="Code" Type="String" MaxLength="36" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Int32" Nullable="false" />
           <Property Name="AddedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="AddedBy" Type="Int64" Nullable="false" />
           <Property Name="ModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedBy" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="mVariable" Relationship="Self.FK_Users_mVariable" FromRole="Users" ToRole="mVariable" />
-          <NavigationProperty Name="UserRolesMappings" Relationship="Self.FK_UserRolesMapping_UserRolesMapping" FromRole="Users" ToRole="UserRolesMapping" />
+          <NavigationProperty Name="mVariable" Relationship="DbMobileShopModel.FK_Users_mVariable" FromRole="User" ToRole="mVariable" />
+          <NavigationProperty Name="UserRolesMappings" Relationship="DbMobileShopModel.FK_UserRolesMapping_UserRolesMapping" FromRole="User" ToRole="UserRolesMapping" />
         </EntityType>
         <Association Name="FK_Users_mVariable">
-          <End Role="mVariable" Type="Self.mVariable" Multiplicity="1" />
-          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <End Type="DbMobileShopModel.mVariable" Role="mVariable" Multiplicity="1" />
+          <End Type="DbMobileShopModel.User" Role="User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="mVariable">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="Users">
+            <Dependent Role="User">
               <PropertyRef Name="IsActive" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserRolesMapping">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="RoleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="DbMobileShopModel.FK_UserRolesMapping_Roles" FromRole="UserRolesMapping" ToRole="Role" />
+          <NavigationProperty Name="User" Relationship="DbMobileShopModel.FK_UserRolesMapping_UserRolesMapping" FromRole="UserRolesMapping" ToRole="User" />
+        </EntityType>
         <Association Name="FK_UserRolesMapping_Roles">
-          <End Role="Roles" Type="Self.Role" Multiplicity="1" />
-          <End Role="UserRolesMapping" Type="Self.UserRolesMapping" Multiplicity="*" />
+          <End Type="DbMobileShopModel.Role" Role="Role" Multiplicity="1" />
+          <End Type="DbMobileShopModel.UserRolesMapping" Role="UserRolesMapping" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Roles">
+            <Principal Role="Role">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="UserRolesMapping">
@@ -179,10 +198,10 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserRolesMapping_UserRolesMapping">
-          <End Role="Users" Type="Self.User" Multiplicity="1" />
-          <End Role="UserRolesMapping" Type="Self.UserRolesMapping" Multiplicity="*" />
+          <End Type="DbMobileShopModel.User" Role="User" Multiplicity="1" />
+          <End Type="DbMobileShopModel.UserRolesMapping" Role="UserRolesMapping" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Users">
+            <Principal Role="User">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="UserRolesMapping">
@@ -190,24 +209,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="DbMobileShopEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="mVariables" EntityType="Self.mVariable" />
-          <EntitySet Name="Roles" EntityType="Self.Role" />
-          <EntitySet Name="UserRolesMappings" EntityType="Self.UserRolesMapping" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK_Users_mVariable" Association="Self.FK_Users_mVariable">
-            <End Role="mVariable" EntitySet="mVariables" />
-            <End Role="Users" EntitySet="Users" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserRolesMapping_Roles" Association="Self.FK_UserRolesMapping_Roles">
-            <End Role="Roles" EntitySet="Roles" />
-            <End Role="UserRolesMapping" EntitySet="UserRolesMappings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserRolesMapping_UserRolesMapping" Association="Self.FK_UserRolesMapping_UserRolesMapping">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UserRolesMapping" EntitySet="UserRolesMappings" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -232,31 +233,32 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserRolesMappings">
-            <EntityTypeMapping TypeName="DbMobileShopModel.UserRolesMapping">
-              <MappingFragment StoreEntitySet="UserRolesMapping">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="DbMobileShopModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
-                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="AddedBy" ColumnName="AddedBy" />
+                <ScalarProperty Name="AddedOn" ColumnName="AddedOn" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRolesMappings">
+            <EntityTypeMapping TypeName="DbMobileShopModel.UserRolesMapping">
+              <MappingFragment StoreEntitySet="UserRolesMapping">
+                <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

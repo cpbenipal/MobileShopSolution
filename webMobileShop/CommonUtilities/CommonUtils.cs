@@ -55,18 +55,17 @@ namespace webMobileShop.CommonUtilities
             }
 
             return passwordString;
-        }
-
-        public enum EnumStatus 
-        { 
-            Active = 1,
-            Pending,
-            Declined
-        }
-        public enum EnumRole
-        { 
-            Admin = 1,
-            Customer, 
-        }
+        }        
+    }
+    public enum EnumStatus
+    {
+        Active = 1,
+        Pending,
+        Declined
+    }
+    public enum EnumRole
+    {
+        Admin = 1,
+        Customer,
     }
 }

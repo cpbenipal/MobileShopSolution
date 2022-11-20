@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Linq;
 
-namespace webMobileShop.CommonUtilities
+namespace webMobileShop.Models
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     public class AuthorizeRoleAttribute : AuthorizeAttribute

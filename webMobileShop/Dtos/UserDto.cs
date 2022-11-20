@@ -61,8 +61,10 @@ namespace webMobileShop.Dtos
         public string Mobile { get; set; }
         [Required]
         public string Address { get; set; }
+        [Display(Name = "Role")]
         public string RoleName { get; set; }
-        public int IsActive { get; set; }
+        [Display(Name = "Active")]
+        public string IsActive { get; set; }
         public DateTime AddedOn { get; set; }
         public long AddedBy { get; set; }
         public DateTime ModifiedOn { get; set; }

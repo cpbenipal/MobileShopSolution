@@ -2,9 +2,11 @@
 using webMobileShop.CommonUtilities;
 using webMobileShop.Contracts;
 using webMobileShop.Interactors;
+using webMobileShop.Models;
 
 namespace webMobileShop.Controllers
-{ 
+{
+    [AuthorizeRoleAttribute(EnumRole.Admin)]
     public class AdminController : Controller
     {
         // GET: Admin
@@ -14,9 +16,7 @@ namespace webMobileShop.Controllers
         {
             this.userinteractor = userinteractor;
             _hashManager = hashManager;
-        }
-        [HttpGet]
-        [AuthorizeRoleAttribute(EnumRole.Admin)]       
+        }     
         public ActionResult Index()
         {
             var response = userinteractor.GetAllUsers();

@@ -1,8 +1,7 @@
 ﻿using webMobileShop.Contracts;
 using webMobileShop.Dtos;
 using webMobileShop.Models;
-using System;
-using static webMobileShop.CommonUtilities.CommonUtils;
+using System; 
 using System.Linq;
 using webMobileShop.CommonUtilities;
 using System.IO;
@@ -30,7 +29,7 @@ namespace webMobileShop.Interactors
                 FullName = x.FullName,
                 Email = x.Email,
                 Mobile= x.Mobile,
-                IsActive = x.IsActive,
+                IsActive = Enum.GetName(typeof(EnumStatus), x.IsActive),
                 Address = x.Address,
                 RoleName = Enum.GetName(typeof(EnumRole), x.UserRolesMappings.FirstOrDefault(xx=>xx.UserID == x.Id).RoleID),
                 AddedOn = x.AddedOn,

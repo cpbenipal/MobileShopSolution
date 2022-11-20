@@ -156,7 +156,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="CommonUtilities\CommonUtils.cs" />
     <Compile Include="CommonUtilities\Emailer.cs" />
-    <Compile Include="CommonUtilities\AuthorizeRole.cs" />
+    <Compile Include="Models\AuthorizeRole.cs" />
     <Compile Include="Contracts\IHashManager.cs" />
     <Compile Include="Contracts\IRepositoryBase.cs" />
     <Compile Include="Contracts\IRepositoryWrapper.cs" />
